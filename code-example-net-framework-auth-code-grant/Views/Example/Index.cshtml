@@ -1,0 +1,62 @@
+﻿@using code_example_net_framework_auth_code_grant.Models
+@model DSAppUser
+
+<div class="container" style="margin-top: 40px;height: 70vh;">
+    <div class="row">
+        <h4>Send an envelope with a remote (email) signer and cc recipient</h4>
+        <p>
+            The envelope includes a pdf, Word, and HTML document. Anchor text
+            (<a href="https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience">AutoPlace</a>)
+            is used to position the signing fields in the documents.
+        </p>
+        <p>
+            This is a general example of creating and sending an envelope (a signing request) to multiple recipients,
+            with multiple documents, and with signature fields for the documents.
+        </p>
+        <p>
+            API method used:
+            <a target='_blank' href="https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create">Envelopes::create</a>.
+        </p>
+    </div>
+    <div class="row">
+        <form action="/Example/Create" method="post" data-busy="form">
+            <hr />
+            <h4><b>Sender</b><br />@Model.Name - @Model.Email</h4>
+            <div class="form-group">
+                <label for="senderAccountId">Sender account</label>
+                <select name="senderAccountId" id="senderAccountId" required class="form-control">
+                    @foreach (Account acc in Model.Accounts)
+                    {
+                        <option value="@acc.AccountId">@acc.AccountName @(acc.IsDefault?" (Default)":"")</option>
+                    }
+                </select>
+            </div>
+            <hr />
+            <div>
+                <label for="signerEmail">Signer Email</label>
+                <input type="email" class="form-control" id="signerEmail" name="signerEmail"
+                       aria-describedby="emailHelp" placeholder="pat@example.com" required
+                       value="">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="signerName">Signer Name</label>
+                <input type="text" class="form-control" id="signerName" placeholder="Pat Johnson" name="signerName"
+                       value="" required>
+            </div>
+            <div class="form-group">
+                <label for="ccEmail">CC Email</label>
+                <input type="email" class="form-control" id="ccEmail" name="ccEmail"
+                       aria-describedby="emailHelp" placeholder="pat@example.com" required
+                <small id="emailHelp" class="form-text text-muted">The email and/or name for the cc recipient must be different from the signer.</small>
+            </div>
+            <div class="form-group">
+                <label for="ccName">CC Name</label>
+                <input type="text" class="form-control" id="ccName" placeholder="Pat Johnson" name="ccName"
+                       required>
+            </div>
+            <input type="hidden" name="_csrf" value="<%- csrfToken %>">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
